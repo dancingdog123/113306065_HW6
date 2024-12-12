@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>113306065_HW6_1A2B</title>
+</head>
+<body>
+    <h1>113306065_HW6_1A2B</h1>
+    <label for="guess">輸入4個不重複的數字:</label>
+    <input type="text" id="guess" maxlength="4">
+    <button onclick="playGame()">提交</button>
+    <div id="log"></div>
+    <script>
+        let answer = Answer();
+        let attempts = 0;
+        function Answer() {
+            let digits = "0123456789".split("");
+            return Array.from({ length: 4 }, () => digits.splice(Math.floor(Math.random() * digits.length), 1)[0]);
+        }
+        function playGame() {
+            const guess = document.getElementById("guess").value.trim();
+            if (!/^[0-9]{4}$/.test(guess) || new Set(guess).size !== 4) {
+                alert("請輸入 4 個不重複的數字！");
+                return;
+            }
+            attempts++;
+            let a = 0, b = 0;
+            answer.forEach((digit, i) => {
+                if (guess[i] === digit) a++;
+                else if (answer.includes(guess[i])) b++;
+            });
+            const log = document.getElementById("log");
+            log.innerHTML += `第${attempts}次: ${guess} =>${a}A${b}B<br>`;
+            if (a === 4) {
+                alert(`答對了，作答${attempts}次`);
+                answer = generateAnswer();
+                attempts = 0;
+                log.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
